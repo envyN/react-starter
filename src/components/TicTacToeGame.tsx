@@ -36,7 +36,6 @@ export class TicTacToeGame extends React.Component<TicTacToeGameProps, TicTacToe
     }
 
     setGridOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log(event.target.value);
         this.setState({gridSize: +event.target.value});
     };
 
