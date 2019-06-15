@@ -37,12 +37,11 @@ class Board extends React.Component {
         winningCombinations.push(new Array(n).fill(0).map((v, i) => i * n + i));
         //Reverse Diagonal as Winning Combinations
         winningCombinations.push(new Array(n).fill(0).map((v, i) => (n * (i + 1)) - i - 1));
-        console.log(winningCombinations);
+        console.debug(winningCombinations);
         return winningCombinations;
     }
 
     calculateWinner(state) {
-        console.log(state);
         let gameOver = state.squares.indexOf(null) === -1;
         let winner   = null;
         this.winningCombinations.forEach(comb => {
@@ -64,7 +63,6 @@ class Board extends React.Component {
         const squares = [].concat(this.state.squares);
         let xIsNext   = this.state.xIsNext;
         if (this.state.squares[i] === null) {
-            console.log(this.state.xIsNext);
             squares[i] = this.state.xIsNext ? 'X' : 'O';
             xIsNext    = !xIsNext;
         }
@@ -127,7 +125,7 @@ class Game extends React.Component {
         return (
             <div className="game">
                 <div className="game-board">
-                    <Board n={3}/>
+                    <Board n={5}/>
                 </div>
                 <div className="game-info">
                     <div>{/* status */}</div>
