@@ -1,0 +1,20 @@
+$dimension: 2rem;
+.square {
+  background: #fff;
+  border: 1px solid #999;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 34px;
+  height: $dimension;
+  width: $dimension;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  &:focus {
+    outline: none;
+  }
+  &.winning-cell{
+    background-color: #6fd280;
+  }
+}

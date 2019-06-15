@@ -1,0 +1,12 @@
+.board {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.board-row {
+  display: flex;
+}
+
+.status {
+  margin-bottom: 10px;
+}
