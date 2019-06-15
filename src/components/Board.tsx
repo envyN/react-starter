@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Square } from './Square';
 import './Board.scss';
+import { TicTac, WINNER_ARRAYS } from './TicTacToeHelper';
 
 export interface BoardProps {
     n: number,
@@ -8,10 +9,10 @@ export interface BoardProps {
 }
 
 export interface BoardState {
-    squares: (string | null)[],
+    squares: (TicTac | null)[],
     xIsNext: boolean,
     gameOver: boolean,
-    winner: string | null,
+    winner: TicTac | null,
     winningCells: number[]
 }
 
@@ -30,28 +31,8 @@ export class Board extends React.Component<BoardProps, BoardState> {
             winner: null,
             winningCells: []
         };
-        this.winningCombinations = this.calcWinningCombinations(n);
+        this.winningCombinations = WINNER_ARRAYS(n);
         this.n = n;
-    }
-
-    calcWinningCombinations(n: number) {
-        const winningCombinations = [];
-        for (let row = 0; row < n; row++) {
-            //All Rows as Winning Combinations
-            winningCombinations.push(new Array(n).fill(0)
-                                                 .map((v, i) => (row * n) + i));
-            //All Cols as Winning Combinations
-            winningCombinations.push(new Array(n).fill(0)
-                                                 .map((v, i) => row + (n * i)));
-        }
-        //Leading Diagonal as Winning Combinations
-        winningCombinations.push(new Array(n).fill(0)
-                                             .map((v, i) => i * n + i));
-        //Reverse Diagonal as Winning Combinations
-        winningCombinations.push(new Array(n).fill(0)
-                                             .map((v, i) => (n * (i + 1)) - i - 1));
-        console.debug(winningCombinations);
-        return winningCombinations;
     }
 
     calculateWinner(state: BoardState): BoardState {
@@ -78,7 +59,7 @@ export class Board extends React.Component<BoardProps, BoardState> {
         if (!this.state.gameOver && this.state.squares[i] === null) {
             const squares = this.state.squares.slice();
             let xIsNext = !this.state.xIsNext;
-            squares[i] = this.state.xIsNext ? 'X' : 'O';
+            squares[i] = this.state.xIsNext ? TicTac.Tic : TicTac.Tac;
             const newState = this.calculateWinner({...this.state, squares, xIsNext});
             this.setState(newState);
             if (newState.gameOver) {
@@ -114,15 +95,15 @@ export class Board extends React.Component<BoardProps, BoardState> {
     }
 
     render() {
-        let status = `Next player: ${ this.state.xIsNext ? 'X' : 'O' }`;
+        let status = `Next player: ${ this.state.xIsNext ? TicTac.Tic : TicTac.Tac }`;
         if (this.state.gameOver) {
             let winnerStatus;
             switch (this.state.winner) {
-                case 'X':
-                    winnerStatus = 'X Wins!';
+                case TicTac.Tic:
+                    winnerStatus = `${ TicTac.Tic } Wins!`;
                     break;
-                case 'O':
-                    winnerStatus = 'O Wins!';
+                case TicTac.Tac:
+                    winnerStatus = `${ TicTac.Tic } Wins!`;
                     break;
                 default:
                     winnerStatus = 'Match Drawn!';

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import './Square.scss';
+import { TicTac } from './TicTacToeHelper';
 
 export interface SquareProps {
-    value: string | null,
+    value: TicTac | null,
     winnerCell: boolean,
     onClick: () => void
 }
