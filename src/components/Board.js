@@ -11,7 +11,7 @@ export class Board extends React.Component {
             xIsNext: true,
             gameOver: false,
             winner: null,
-            winningCombination: null
+            winningCells: []
         };
         this.winningCombinations = this.calcWinningCombinations(n);
         this.n                   = n;
@@ -36,7 +36,7 @@ export class Board extends React.Component {
     calculateWinner(state) {
         let gameOver           = state.squares.indexOf(null) === -1;
         let winner             = null;
-        let winningCombination = null;
+        let winningCells = [];
         this.winningCombinations.forEach(comb => {
             const combVal = comb.map(p => state.squares[p]);
             if (combVal.indexOf(null) === -1) {
@@ -46,11 +46,11 @@ export class Board extends React.Component {
                 if (same) {
                     gameOver           = true;
                     winner             = val;
-                    winningCombination = [].concat(comb);
+                    winningCells.push(...comb);
                 }
             }
         });
-        return {...state, gameOver, winner, winningCombination};
+        return {...state, gameOver, winner, winningCells};
     }
 
     handleClick(i) {
@@ -67,7 +67,7 @@ export class Board extends React.Component {
     }
 
     renderSquare(i) {
-        const isIWinner = this.state.winningCombination && this.state.winningCombination.indexOf(i)!==-1;
+        const isIWinner = this.state.winningCells && this.state.winningCells.indexOf(i)!==-1;
         return <Square key={i}
                        value={this.state.squares[i]}
                        onClick={() => this.handleClick(i)}
