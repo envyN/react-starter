@@ -4,17 +4,26 @@ import './TicTacToeGame.scss';
 
 export interface TicTacToeGameProps {}
 
+export interface GridSizeOption {
+    n: number,
+    label: string
+}
+
 export interface TicTacToeGameState {
     gameNumber: number,
-    gameComplete: boolean
+    gameComplete: boolean,
+    gridSize: number
 }
 
 export class TicTacToeGame extends React.Component<TicTacToeGameProps, TicTacToeGameState> {
+    private gridOptions: GridSizeOption[] = [3, 5, 7, 9].map(n => ({n, label: `${ n }x${ n }`}));
+
     constructor(props: TicTacToeGameProps) {
         super(props);
         this.state = {
             gameNumber: 1,
-            gameComplete: false
+            gameComplete: false,
+            gridSize: this.gridOptions[0].n
         };
     }
 
@@ -26,15 +35,28 @@ export class TicTacToeGame extends React.Component<TicTacToeGameProps, TicTacToe
         this.setState({gameNumber: this.state.gameNumber + 1, gameComplete: false});
     }
 
+    setGridOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        console.log(event.target.value);
+        this.setState({gridSize: +event.target.value});
+    };
+
     render() {
         let newGameButton = null;
         if (this.state.gameComplete) {
-            newGameButton = <button onClick={ () => this.createNewGame() }>New Game</button>;
+            newGameButton = <>
+                <select onChange={ this.setGridOption }>
+                    { this.gridOptions.map(o => {
+                        return <option value={ o.n }
+                                       key={ o.n }>{ o.label }</option>
+                    }) }
+                </select>
+                <button onClick={ () => this.createNewGame() }>New Game</button>
+            </>;
         }
         return (
             <div className="game">
                 <div className="game-board">
-                    <Board n={ 3 }
+                    <Board n={ this.state.gridSize }
                            key={ this.state.gameNumber }
                            onComplete={ () => {
                                this.onComplete();
